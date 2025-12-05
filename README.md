@@ -8,12 +8,13 @@
 <br />
 <p align="center">
   <img src="https://raw.githubusercontent.com/JoeJoeTV/AstroLauncher/master/assets/astrolauncherlogo.ico" width="128px">
-  <h3 align="center">AstroLauncher - 专用服务器启动器</h3>
+  <h3 align="center">AstroLauncher - 专用服务器启动器-汉化版</h3>
   <p align="center">
-    一个用于Astroneer专用服务器的一体化服务器管理工具。
+    一个用于Astroneer专用服务器的一体化服务器管理工具。-汉化版
   </p>
   <p align="center">
     <b>这是一个修复了一些问题的分支，因为<a href="https://github.com/ricky-davis/AstroLauncher">原始仓库</a>已被归档</b>
+    <b>原公网IP获取接口失效，进行修复并对项目进行整体汉化，更适合中国宝宝体质。</b>
   </p>
 
   <p align="center">
