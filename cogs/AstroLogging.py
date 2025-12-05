@@ -1,5 +1,3 @@
-
-
 import gzip
 import logging
 import ntpath
@@ -28,9 +26,10 @@ class TimedRotatingFileHandler(_TRFH):
         super(TimedRotatingFileHandler, self).doRollover()
         log_dir = ntpath.dirname(self.baseFilename)
         to_compress = [
-            ntpath.join(log_dir, f) for f in os.listdir(log_dir) if f.startswith(
-                ntpath.basename(ntpath.splitext(self.baseFilename)[0])
-            ) and not f.endswith((".gz", ".log"))
+            ntpath.join(log_dir, f)
+            for f in os.listdir(log_dir)
+            if f.startswith(ntpath.basename(ntpath.splitext(self.baseFilename)[0]))
+            and not f.endswith((".gz", ".log"))
         ]
         for f in to_compress:
             try:
@@ -42,15 +41,15 @@ class TimedRotatingFileHandler(_TRFH):
                 pass
 
 
-class AstroLogging():
+class AstroLogging:
     log_stream = None
     discordWebhookURL = None
     discordWebhookLevel = "chat"
     discordWebhookAvatarDict = {}
     discordWebhookQueue = Queue()
     discordWebhookHeaders = {
-        'Content-Type': 'application/json; charset=utf-8',
-        'User-Agent': f"AstroLauncherWebhooks ( https://github.com/JoeJoeTV/AstroLauncher/releases/latest , {ALVERSION} )"
+        "Content-Type": "application/json; charset=utf-8",
+        "User-Agent": f"AstroLauncherWebhooks ( https://github.com/JoeJoeTV/AstroLauncher/releases/latest , {ALVERSION} )",
     }
     # print(discordWebhookHeaders)
     avatarThemes = [
@@ -62,18 +61,26 @@ class AstroLogging():
         "summerwarmth",
         "bythepool",
         "duskfalling",
-        "berrypie"
+        "berrypie",
     ]
     discordWebhookEmoji = {
         "j": ":wave:",
         "l": ":x:",
         "s": ":floppy_disk:",
         "b": ":recycle:",
-        "c": ":speech_balloon:"
+        "c": ":speech_balloon:",
     }
 
     @staticmethod
-    def logPrint(message, msgType="info", playerName=None, printTraceback=False, ovrDWHL=False, printToDiscord=None, dwet=None):
+    def logPrint(
+        message,
+        msgType="info",
+        playerName=None,
+        printTraceback=False,
+        ovrDWHL=False,
+        printToDiscord=None,
+        dwet=None,
+    ):
         ptd = True
         if msgType == "debug":
             ptd = False
@@ -92,8 +99,11 @@ class AstroLogging():
             logging.error(pformat(message), exc_info=printTraceback)
         if msgType == "critical":
             if printTraceback:
-                ermsg = ('Error on line {}'.format(
-                    sys.exc_info()[-1].tb_lineno), type(message).__name__, message)
+                ermsg = (
+                    "Error on line {}".format(sys.exc_info()[-1].tb_lineno),
+                    type(message).__name__,
+                    message,
+                )
                 logging.critical(pformat(ermsg))
             logging.critical(pformat(message), exc_info=printTraceback)
 
@@ -107,23 +117,23 @@ class AstroLogging():
             requestObj = {
                 "content": message,
                 "avatar_url": "https://cdn.discordapp.com/attachments/778327974071238676/778334487208525844/AstroLauncherTransparent.png",
-                "allowed_mentions": {
-                    "parse": []
-                }
+                "allowed_mentions": {"parse": []},
             }
             if msgType in ("chat", "cmd"):
                 if msgType == "cmd":
                     if lvl != "cmd" and lvl != "all":
                         return
-                    message = "/"+message
+                    message = "/" + message
                 requestObj["content"] = message
-                requestObj['username'] = playerName
+                requestObj["username"] = playerName
                 if playerName not in AstroLogging.discordWebhookAvatarDict.keys():
                     random.seed(playerName)
                     playerNameTheme = random.choice(AstroLogging.avatarThemes)
                     avatarURL = f"https://www.tinygraphs.com/squares/{playerName}?theme={playerNameTheme}&numcolors=4&size=220&fmt=png"
                     AstroLogging.discordWebhookAvatarDict[playerName] = avatarURL
-                requestObj['avatar_url'] = AstroLogging.discordWebhookAvatarDict[playerName]
+                requestObj["avatar_url"] = AstroLogging.discordWebhookAvatarDict[
+                    playerName
+                ]
             else:
                 if lvl != "all" and not ovrDWHL:
                     return
@@ -135,16 +145,26 @@ class AstroLogging():
     def sendDiscordReqLoop(cls):
         def sendDiscordReq(queueMsg):
             try:
-                _ = (AstroRequests.post(cls.discordWebhookURL,
-                                        headers=cls.discordWebhookHeaders, jsonD=queueMsg))
+                _ = AstroRequests.post(
+                    cls.discordWebhookURL,
+                    headers=cls.discordWebhookHeaders,
+                    jsonD=queueMsg,
+                )
             except Exception as err:
-                ermsg = ('FINAL Error on line {}'.format(
-                    sys.exc_info()[-1].tb_lineno), type(err).__name__, err)
+                ermsg = (
+                    "FINAL Error on line {}".format(sys.exc_info()[-1].tb_lineno),
+                    type(err).__name__,
+                    err,
+                )
                 AstroLogging.logPrint(
-                    f"Failed to send log msg to discord. {ermsg}", msgType="warning", printToDiscord=False, printTraceback=True)
+                    f"无法将日志消息发送到Discord。 {ermsg}",
+                    msgType="warning",
+                    printToDiscord=False,
+                    printTraceback=True,
+                )
+
         while True:
-            t = Thread(target=sendDiscordReq, args=(
-                cls.discordWebhookQueue.get(),))
+            t = Thread(target=sendDiscordReq, args=(cls.discordWebhookQueue.get(),))
             t.daemon = True
             t.start()
 
@@ -168,21 +188,22 @@ class AstroLogging():
 
     @staticmethod
     def setup_logging():
-        LOGFORMAT = '%(asctime)s - %(levelname)-6s %(message)s'
-        CLOGFORMAT = '%(asctime)s - %(log_color)s%(levelname)-6s%(reset)s %(message)s'
+        LOGFORMAT = "%(asctime)s - %(levelname)-6s %(message)s"
+        CLOGFORMAT = "%(asctime)s - %(log_color)s%(levelname)-6s%(reset)s %(message)s"
         DATEFMT = "%H:%M:%S"
         LOGCOLORS = {
-            'DEBUG':    'cyan',
-            'INFO':     'green',
-            'CMD':      'blue',
-            'CHAT':     'cyan',
-            'WARNING':  'red',
-            'ERROR':    'red',
-            'CRITICAL': 'red,bg_white',
+            "DEBUG": "cyan",
+            "INFO": "green",
+            "CMD": "blue",
+            "CHAT": "cyan",
+            "WARNING": "red",
+            "ERROR": "red",
+            "CRITICAL": "red,bg_white",
         }
         formatter = logging.Formatter(LOGFORMAT, datefmt=DATEFMT)
         colorformatter = ColoredFormatter(
-            CLOGFORMAT, datefmt=DATEFMT, log_colors=LOGCOLORS)
+            CLOGFORMAT, datefmt=DATEFMT, log_colors=LOGCOLORS
+        )
         rootLogger = logging.getLogger()
         rootLogger.setLevel(logging.DEBUG)
 
@@ -198,24 +219,29 @@ class AstroLogging():
         rootLogger.addHandler(console)
         rootLogger.addHandler(stringIOLog)
 
-    @ staticmethod
+    @staticmethod
     def setup_loggingPath(astroPath, logRetention=0):
-        LOGFORMAT = '%(asctime)s - %(levelname)-6s %(message)s'
+        LOGFORMAT = "%(asctime)s - %(levelname)-6s %(message)s"
         DATEFMT = "%H:%M:%S"
         formatter = logging.Formatter(LOGFORMAT, datefmt=DATEFMT)
 
         rootLogger = logging.getLogger()
 
-        logsPath = ntpath.join(astroPath, 'logs\\')
+        logsPath = ntpath.join(astroPath, "logs\\")
         if not ntpath.exists(logsPath):
             os.makedirs(logsPath)
-        fileLogHandler = TimedRotatingFileHandler(ntpath.join(
-            astroPath, 'logs', "server.log"), 'midnight', 1, int(logRetention))
+        fileLogHandler = TimedRotatingFileHandler(
+            ntpath.join(astroPath, "logs", "server.log"),
+            "midnight",
+            1,
+            int(logRetention),
+        )
         fileLogHandler.setFormatter(formatter)
         fileLogHandler.setLevel(logging.INFO)
 
-        debugLogHandler = TimedRotatingFileHandler(ntpath.join(
-            astroPath, 'logs', "debug.log"), 'midnight', 1, 3)
+        debugLogHandler = TimedRotatingFileHandler(
+            ntpath.join(astroPath, "logs", "debug.log"), "midnight", 1, 3
+        )
         debugLogHandler.setFormatter(formatter)
         debugLogHandler.setLevel(logging.DEBUG)
 

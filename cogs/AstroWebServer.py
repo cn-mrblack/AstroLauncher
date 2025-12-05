@@ -117,7 +117,7 @@ class WebServer(tornado.web.Application):
                 self.ssl = True
             else:
                 AstroLogging.logPrint(
-                    "No SSL Certificates specified. Defaulting to HTTP", "warning")
+                    "未指定SSL证书。默认使用HTTP", "warning")
         if self.ssl:
             sslPort = self.launcher.launcherConfig.SSLPort
             ssl_options = {
@@ -129,10 +129,10 @@ class WebServer(tornado.web.Application):
         else:
             self.listen(self.port)
             url = f"http://localhost{':'+str(self.port) if self.port != 80 else ''}{self.baseURL+'/' if self.baseURL else ''}"
-        AstroLogging.logPrint(f"Running a web server at {url}")
+        AstroLogging.logPrint(f"正在 {url} 运行Web服务器")
         if self.passwordHash == "":
             AstroLogging.logPrint(
-                f"SECURITY ALERT: Visit {url} to set your password!", "warning")
+                f"安全警报: 访问 {url} 设置您的密码!", "warning")
         tornado.ioloop.IOLoop.instance().start()
 
     def iterWebSocketConnections(self, force=False):
@@ -221,7 +221,7 @@ class NotFoundHandler(tornado.web.RequestHandler):
     def prepare(self):  # for all methods
         raise tornado.web.HTTPError(
             status_code=404,
-            reason="Invalid resource path."
+            reason="无效的资源路径。"
         )
 
 
@@ -534,11 +534,11 @@ class PlayerRequestHandler(BaseHandler):
             except:
                 pass
         if playerGUID is None and playerName is None:
-            self.write({"message": "Missing variable! (name or guid)"})
+            self.write({"message": "缺少变量! (name 或 guid)"})
             return
 
         if player and player["playerCategory"] == "Owner":
-            self.write({"message": "Cannot touch the Owner!"})
+            self.write({"message": "不能操作服务器所有者!"})
             return
         if playerName in self.launcher.DedicatedServer.stripPlayers:
             self.launcher.DedicatedServer.stripPlayers.remove(
@@ -549,7 +549,7 @@ class PlayerRequestHandler(BaseHandler):
                 if action == "kick":
                     self.launcher.DedicatedServer.AstroRCON.DSKickPlayerGuid(
                         playerGUID)
-                    AstroLogging.logPrint(f"Kicking player: {playerName}")
+                    AstroLogging.logPrint(f"正在踢除玩家: {playerName}")
 
             if action == "ban":
                 if playerGUID:
@@ -560,14 +560,14 @@ class PlayerRequestHandler(BaseHandler):
                     self.launcher.DedicatedServer.AstroRCON.DSSetPlayerCategoryForPlayerName(
                         playerName, "Blacklisted")
                     self.launcher.DedicatedServer.refresh_settings()
-                    AstroLogging.logPrint(f"Banning player: {playerName}")
+                    AstroLogging.logPrint(f"正在封禁玩家: {playerName}")
 
             if action == "WL":
                 if playerName:
                     self.launcher.DedicatedServer.AstroRCON.DSSetPlayerCategoryForPlayerName(
                         playerName, "Whitelisted")
                     self.launcher.DedicatedServer.refresh_settings()
-                    AstroLogging.logPrint(f"Whitelisting player: {playerName}")
+                    AstroLogging.logPrint(f"正在将玩家加入白名单: {playerName}")
 
             if action == "admin":
                 if playerName:
@@ -575,7 +575,7 @@ class PlayerRequestHandler(BaseHandler):
                         playerName, "Admin")
                     self.launcher.DedicatedServer.refresh_settings()
                     AstroLogging.logPrint(
-                        f"Setting player as Admin: {playerName}")
+                        f"正在将玩家设为管理员: {playerName}")
 
             if action == "reset":
                 if playerName:
@@ -583,7 +583,7 @@ class PlayerRequestHandler(BaseHandler):
                         playerName, "Unlisted")
                     self.launcher.DedicatedServer.refresh_settings()
                     AstroLogging.logPrint(
-                        f"Resetting perms for player: {playerName}")
+                        f"正在重置玩家权限: {playerName}")
 
             if action == "remove":
                 self.launcher.DedicatedServer.AstroRCON.DSSetPlayerCategoryForPlayerName(
@@ -613,7 +613,7 @@ class PlayerRequestHandler(BaseHandler):
                     if x['playerName'] not in self.launcher.DedicatedServer.stripPlayers]
                 self.launcher.DedicatedServer.refresh_settings()
                 AstroLogging.logPrint(
-                    f"Removing player data: {playerName}")
+                    f"正在删除玩家数据: {playerName}")
 
             playerList = self.launcher.DedicatedServer.AstroRCON.DSListPlayers()
             if playerList is not None:

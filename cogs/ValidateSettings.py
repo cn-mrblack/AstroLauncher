@@ -17,7 +17,7 @@ from cogs.utils import AstroRequests
 
 
 def get_public_ip():
-    url = "https://api.ipify.org?format=json"
+    url = "https://api.ip.sb/jsonip?format=json"
     x = json.load(AstroRequests.get(url))
     AstroLogging.logPrint(x, "debug")
     return x['ip']
@@ -38,7 +38,7 @@ def get_current_settings(launcher, ovrIP=False):
     confPath = ntpath.join(
         curPath, r"Astro\Saved\Config\WindowsServer\AstroServerSettings.ini")
 
-    AstroLogging.logPrint("Verifying PublicIP setting...", "debug")
+    AstroLogging.logPrint("正在验证PublicIP设置...", "debug")
     try:
         tConfig = MultiConfig().baseline(confPath, {})
         bIP = tConfig.getdict()[
@@ -47,9 +47,9 @@ def get_current_settings(launcher, ovrIP=False):
         if validIP and IP(bIP).iptype() != 'PUBLIC':
             validIP = False
             AstroLogging.logPrint(
-                "PublicIP field (AstroServerSettings.ini) contained a Private IP!", "warning")
+                "PublicIP字段(AstroServerSettings.ini)包含私有IP!", "warning")
             AstroLogging.logPrint(
-                "This will be automatically fixed..", "warning")
+                "这将被自动修复..", "warning")
     except:
         validIP = False
 
@@ -68,12 +68,12 @@ def get_current_settings(launcher, ovrIP=False):
         t = "warning"
         if not validIP:
             t = "error"
-        AstroLogging.logPrint("Could not update PublicIP!", t)
+        AstroLogging.logPrint("无法更新PublicIP!", t)
 
     try:
         curLog = "AstroServerSettings.ini"
         AstroLogging.logPrint(
-            "Forcing standardized settings in AstroServerSettings.ini...", "debug")
+            "正在强制标准化AstroServerSettings.ini中的设置...", "debug")
         MultiConfig().overwrite_with(confPath, ovrConfig)
 
         baseConfig = {
@@ -103,7 +103,7 @@ def get_current_settings(launcher, ovrIP=False):
             }
         }
         AstroLogging.logPrint(
-            "Baselining AstroServerSettings.ini...", "debug")
+            "正在为AstroServerSettings.ini建立基线...", "debug")
         config = MultiConfig().baseline(confPath, baseConfig)
 
         settings = config.getdict()['/Script/Astro.AstroServerSettings']
@@ -121,7 +121,7 @@ def get_current_settings(launcher, ovrIP=False):
             }
         }
         curLog = "Engine.ini"
-        AstroLogging.logPrint("Baselining Engine.ini...", "debug")
+        AstroLogging.logPrint("正在为Engine.ini建立基线...", "debug")
         config = MultiConfig().baseline(ntpath.join(
             curPath, r"Astro\Saved\Config\WindowsServer\Engine.ini"), baseConfig)
         # print(settings)
@@ -129,17 +129,17 @@ def get_current_settings(launcher, ovrIP=False):
         settings.update(EngineINI['URL'])
         if isinstance(EngineINI['URL']['Port'], list):
             AstroLogging.logPrint(
-                "Duplicate Ports detected! Please only list one Port.", "critical")
+                "检测到重复端口! 请只列出一个端口.", "critical")
             raise TypeError
         # print(settings)
         return settings
     except Exception as e:
-        AstroLogging.logPrint(f"Error parsing {curLog} file!", "critical")
-        AstroLogging.logPrint("Could not retrieve INI settings!", "critical")
+        AstroLogging.logPrint(f"解析{curLog}文件出错!", "critical")
+        AstroLogging.logPrint("无法获取INI设置!", "critical")
         AstroLogging.logPrint(
-            "Please ensure everything is correctly formatted...", "critical")
+            "请确保所有内容格式正确...", "critical")
         AstroLogging.logPrint(
-            "or delete the INI and allow the launcher to recreate it!", "critical")
+            "或者删除INI文件并允许启动器重新创建它!", "critical")
         AstroLogging.logPrint(e, "critical", True)
         try:
             launcher.DedicatedServer.kill_server()
@@ -256,15 +256,15 @@ def test_nonlocal(ip, port):
     except Exception as e:
         print(e)
         AstroLogging.logPrint(
-            "Unable to verify outside connectivity.", "warning")
+            "无法验证外部连接.", "warning")
         AstroLogging.logPrint(
-            "Could not contact server checker API!", "warning")
+            "无法联系服务器检查API!", "warning")
         AstroLogging.logPrint(
             "+------------------------------------------------+", "warning")
         AstroLogging.logPrint(
-            "|THIS DOES NOT MEAN YOUR SERVER IS NOT REACHABLE,|", "warning")
+            "|这并不意味着您的服务器不可达,|", "warning")
         AstroLogging.logPrint(
-            "|JUST THAT IT COULDN'T BE VERIFIED!              |", "warning")
+            "|只是无法验证而已!              |", "warning")
         AstroLogging.logPrint(
             "+------------------------------------------------+", "warning")
         return False

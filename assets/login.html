@@ -1,4 +1,4 @@
-<html lang="en">
+<html lang="zh-CN">
     {% module HeadModule(launcher,isAdmin) %}
     <body>
         {% module BannerModule(launcher,isAdmin) %}
@@ -11,11 +11,11 @@
                     <div id="loginCard" class="card astroCard">
                         <div class="card-header pt-4 px-4">
                             <h3>
-                                {% if isAdmin %} Logged in as Admin. {% else %}
-                                {% if hashSet %} Enter password to login. {%
-                                else %} No password set. Set one now! {% end %}
-                                {% end %}
-                            </h3>
+                        {% if isAdmin %} 已以管理员身份登录。 {% else %}
+                        {% if hashSet %} 输入密码登录。 {%
+                        else %} 未设置密码。现在设置一个！ {% end %}
+                        {% end %}
+                    </h3>
                         </div>
 
                         <div id="loginCardBody" class="card-body pt-4 show">
@@ -29,7 +29,7 @@
                                     type="submit"
                                     class="btn btn-danger col-12 ml-xl-1 col-xl-5 float-left"
                                 >
-                                    Logout
+                                    退出登录
                                 </button>
                             </form>
                             {% else %}
@@ -37,8 +37,7 @@
                                 action="{{ launcher.webServer.baseURL }}/login"
                                 method="post"
                             >
-                                {% if hashSet %} Password: {% else %} New
-                                password: {% end %}
+                                {% if hashSet %} 密码: {% else %} 新密码: {% end %}
                                 <input
                                     type="password"
                                     name="password"
@@ -51,7 +50,7 @@
                                     type="submit"
                                     class="btn btn-success"
                                 >
-                                    Login
+                                    登录
                                 </button>
                             </form>
                             {% end %}

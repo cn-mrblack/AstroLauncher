@@ -54,7 +54,7 @@ class AstroRCON():
                     f"{self.DS.settings.ConsolePassword}\n".encode())
                 # print(f"{self.DS.settings.ConsolePassword}\n".encode())
             self.connected = True
-            AstroLogging.logPrint("Connected to RCON Console!")
+            AstroLogging.logPrint("已连接到RCON控制台!")
 
     def getSocket(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -69,7 +69,7 @@ class AstroRCON():
                 # pprint(parsedData)
                 return parsedData
         except Exception as e:
-            print(f"Error retrieving player list: {e}")
+            print(f"获取玩家列表错误: {e}")
             return None
 
     def DSKickPlayerGuid(self, playerGuid):
@@ -82,7 +82,7 @@ class AstroRCON():
                 # pprint(parsedData)
                 return parsedData
         except Exception as e:
-            print(f"Error kicking player: {e}")
+            print(f"踢除玩家错误: {e}")
             return None
 
     def DSSetPlayerCategoryForPlayerName(self, playerName, category):
@@ -108,7 +108,7 @@ class AstroRCON():
                 # pprint(parsedData)
                 return parsedData
         except Exception as e:
-            print(f"Error retrieving server statistics: {e}")
+            print(f"获取服务器统计信息错误: {e}")
             return None
 
     def DSSaveGame(self, name=None):
@@ -161,7 +161,7 @@ class AstroRCON():
                 # pprint(parsedData)
                 return parsedData
         except Exception as e:
-            print(f"Error retrieving savegame list: {e}")
+            print(f"获取存档列表错误: {e}")
             return None
 
     def DSNewGame(self):

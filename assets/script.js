@@ -45,54 +45,54 @@ const statusMsg = (msg) => {
             "text-success text-warning text-danger text-info"
         );
         if (msg == "off") {
-            $("#serverStatus").text("Offline");
+            $("#serverStatus").text("离线");
             $("#serverStatus").addClass("text-danger");
-            $("#msg span").text("Server is offline");
+            $("#msg span").text("服务器已离线");
             $("#msg").collapse("show");
         } else if (msg == "shutdown") {
-            $("#serverStatus").text("Shutting Down");
+            $("#serverStatus").text("正在关闭");
             $("#serverStatus").addClass("text-danger");
-            $("#msg span").text("Server is shutting down");
+            $("#msg span").text("服务器正在关闭");
             $("#msg").collapse("hide");
         } else if (msg == "reboot") {
-            $("#serverStatus").text("Rebooting");
+            $("#serverStatus").text("正在重启");
             $("#serverStatus").addClass("text-info");
-            $("#msg span").text("Server is rebooting");
+            $("#msg span").text("服务器正在重启");
             $("#msg").collapse("hide");
         } else if (msg == "starting") {
-            $("#serverStatus").text("Starting");
+            $("#serverStatus").text("正在启动");
             $("#serverStatus").addClass("text-warning");
-            $("#msg span").text("Server is getting ready");
+            $("#msg span").text("服务器正在准备");
             $("#msg").collapse("show");
         } else if (msg == "saving") {
-            $("#serverStatus").text("Saving");
+            $("#serverStatus").text("正在保存");
             $("#serverStatus").addClass("text-info");
-            $("#msg span").text("Server is saving");
+            $("#msg span").text("服务器正在保存");
             $("#msg").collapse("hide");
         } else if (msg == "ready") {
-            $("#serverStatus").text("Ready");
+            $("#serverStatus").text("就绪");
             $("#serverStatus").addClass("text-success");
-            $("#msg span").text("Server is ready");
+            $("#msg span").text("服务器已就绪");
             $("#msg").collapse("hide");
         } else if (msg == "delsave") {
-            $("#serverStatus").text("Deleting Save");
+            $("#serverStatus").text("正在删除存档");
             $("#serverStatus").addClass("text-danger");
-            $("#msg span").text("Server is deleting a Save");
+            $("#msg span").text("服务器正在删除存档");
             $("#msg").collapse("hide");
         } else if (msg == "loadsave") {
-            $("#serverStatus").text("Loading Save");
+            $("#serverStatus").text("正在加载存档");
             $("#serverStatus").addClass("text-warning");
-            $("#msg span").text("Server is loading a Save");
+            $("#msg span").text("服务器正在加载存档");
             $("#msg").collapse("hide");
         } else if (msg == "newsave") {
-            $("#serverStatus").text("Creating New Save");
+            $("#serverStatus").text("正在创建新存档");
             $("#serverStatus").addClass("text-success");
-            $("#msg span").text("Server is creating a new Save");
+            $("#msg span").text("服务器正在创建新存档");
             $("#msg").collapse("hide");
         } else if (msg == "renamesave") {
-            $("#serverStatus").text("Renaming Save");
+            $("#serverStatus").text("正在重命名存档");
             $("#serverStatus").addClass("text-warning");
-            $("#msg span").text("Server is renaming a Save");
+            $("#msg span").text("服务器正在重命名存档");
             $("#msg").collapse("hide");
         }
     }
@@ -142,7 +142,7 @@ const tick = async (data) => {
         if (data.hasUpdate != false) {
             let ghLink = document.querySelector("#githubLink");
             let tipInstance = ghLink._tippy;
-            tipInstance.setContent("Update Available: " + data.hasUpdate);
+            tipInstance.setContent("更新可用: " + data.hasUpdate);
             tipInstance.show();
         }
         // smart scroll
@@ -374,7 +374,7 @@ const tick = async (data) => {
         }
     } catch (e) {
         console.log(e);
-        $("#msg span").text("ERROR! Try again in 10s");
+        $("#msg span").text("错误! 10秒后重试");
         $("#msg").collapse("show");
         statusMsg("off");
     }
@@ -391,7 +391,7 @@ const createSaveActionButtons = function (status, save, index) {
             "aria-expanded": "false",
             id: "dropdownMenu2",
         })
-        .text("Actions");
+        .text("操作");
     let DDMenu = $("<div/>").attr({
         class: "dropdown-menu",
         "aria-labelledby": "dropdownMenu2",
@@ -411,7 +411,7 @@ const createSaveActionButtons = function (status, save, index) {
         .clone()
         .attr("data-action", "load")
         .addClass("sBtn")
-        .text("Load");
+        .text("加载");
     actionButtonBufferList.push(loadButton);
 
     let deleteButton = sButton
@@ -420,14 +420,14 @@ const createSaveActionButtons = function (status, save, index) {
         .attr("data-action", "delete")
         .attr("data-toggle", "modal")
         .attr("data-target", "#deleteSaveModal")
-        .text("Delete");
+        .text("删除");
     actionButtonBufferList.push(deleteButton);
 
     let renameButton = sButton
         .clone()
         .addClass("sdBtn")
         .attr("data-action", "rename")
-        .text("Rename");
+        .text("重命名");
     actionButtonBufferList.push(renameButton);
 
     if (status == "Active") {
@@ -472,25 +472,25 @@ const createPlayerActionButtons = function (status, player) {
 
         let actionButtonBufferList = [];
 
-        let kickButton = sButton.clone().attr("data-action", "kick").text("Kick");
+        let kickButton = sButton.clone().attr("data-action", "kick").text("踢除");
         actionButtonBufferList.push(kickButton);
 
-        let banButton = sButton.clone().attr("data-action", "ban").text("Ban");
+        let banButton = sButton.clone().attr("data-action", "ban").text("封禁");
         actionButtonBufferList.push(banButton);
 
-        let WLButton = sButton.clone().attr("data-action", "WL").text("Whitelist");
+        let WLButton = sButton.clone().attr("data-action", "WL").text("加入白名单");
         actionButtonBufferList.push(WLButton);
 
         let AdminButton = sButton
             .clone()
             .attr("data-action", "admin")
-            .text("Give Admin");
+            .text("授予管理员");
         actionButtonBufferList.push(AdminButton);
 
         let ResetButton = sButton
             .clone()
             .attr("data-action", "reset")
-            .text("Reset Perms");
+            .text("重置权限");
         actionButtonBufferList.push(ResetButton);
 
         /*
@@ -591,7 +591,7 @@ $(document).on("click", ".saveNameSubmit", function (e) {
             success: function (result) {},
             error: function (result) {
                 console.log(result);
-                alert("Error");
+                alert("错误");
             },
         });
     } else {
@@ -649,7 +649,7 @@ $("#deleteSaveModal").on("show.bs.modal", function (event) {
     var modal = $(this);
     modal
         .find(".modal-title")
-        .text("Are you sure you wish to delete this save? ");
+        .text("你确定要删除这个存档吗？ ");
     modal.find(".modal-body").text(DOMPurify.sanitize(save["fileName"]));
     modal
         .find(".modal-footer .btn-danger")
@@ -721,7 +721,7 @@ $("#rebootServerBtn").click(function (e) {
 $("#stopLauncherBtn").click(function (e) {
     e.preventDefault();
     let reallyShutdown = confirm(
-        "Are you sure you want to shut down the launcher? It will have to be manually restarted."
+        "你确定要关闭启动器吗？它将需要手动重新启动。"
     );
     if (reallyShutdown == true) {
         statusMsg("shutdown");
@@ -775,7 +775,7 @@ clipboard.on("success", function (e) {
 });
 
 tippy(".ctc", {
-    content: "Copied!",
+    content: "已复制!",
     trigger: "click",
     onShow(instance) {
         setTimeout(() => {
@@ -786,7 +786,7 @@ tippy(".ctc", {
 });
 
 tippy(".ctc", {
-    content: "Click to Copy",
+    content: "点击复制",
     trigger: "mouseenter focus",
     placement: "right",
     onTrigger(instance, event) {
@@ -799,7 +799,7 @@ tippy(".ctc", {
 });
 
 tippy("#githubLink", {
-    content: "Update Available",
+    content: "更新可用",
     placement: "right-end",
     trigger: "manual",
     hideOnClick: false,
